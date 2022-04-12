@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-require("dotenv").config({ path: "../.env" });
+require("dotenv").config({ path: "../.env.local" });
 module.exports = {
    generateAccessToken(username, email, password) {
       return jwt.sign({ username, email, password }, process.env.TOKEN_SECRET, {
