@@ -25,6 +25,7 @@ function getPost(req, res) {
       })
       .catch((err) => res.status(400).send({ success: false, error: err }));
 }
+
 function postPost(req, res) {
    if (!req.body.title || !req.body.snippet || !req.body.body) {
       res.status(403).send(
@@ -32,10 +33,12 @@ function postPost(req, res) {
       );
    } else {
       const { title, snippet, body } = req.body;
+      console.log(req.file);
       const newPost = new Post({
          title,
          snippet,
          body,
+         imageurl: req.file.path,
       });
 
       newPost

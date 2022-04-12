@@ -12,7 +12,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 connectDB();
-
+app.use(express.static("public"));
 app.use("/api/posts", postRouter);
 app.use("/api/users", UserRouter);
 app.use("/api/auth", authRouter);
