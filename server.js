@@ -3,14 +3,14 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const connectDB = require("./config/database");
-
+const cors = require("cors");
 const postRouter = require("./routes/post.route");
 const UserRouter = require("./routes/user.route");
 const authRouter = require("./routes/auth.route");
 
 app.use(morgan("dev"));
 app.use(express.json());
-
+app.use(cors());
 connectDB();
 app.use(express.static("public"));
 app.use("/api/posts", postRouter);

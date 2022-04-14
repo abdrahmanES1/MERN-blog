@@ -38,7 +38,7 @@ function postPost(req, res) {
          title,
          snippet,
          body,
-         imageurl: req.file.path,
+         imageurl: req.file.path.replace("public", ""),
       });
 
       newPost
