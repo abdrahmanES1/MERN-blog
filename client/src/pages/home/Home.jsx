@@ -11,18 +11,14 @@ export default function Home() {
    useEffect(() => {
       const fetchPosts = async () => {
          try {
-            const res = await axios("/posts");
-            // const data = data.data;
+            const res = await axios("http://localhost:4000/api/posts");
 
-            // setPosts(data);
-            console.log(res.data.posts);
             setPosts(res.data.posts);
          } catch (error) {
             console.log(error);
          }
       };
       fetchPosts();
-      console.log(posts);
    }, []);
    return (
       <>

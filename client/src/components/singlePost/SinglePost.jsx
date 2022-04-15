@@ -1,34 +1,31 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router";
-import { Link } from "react-router-dom";
-import { Context } from "../../context/Context";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useAuth } from "../../context/Context";
 import "./singlePost.css";
 
 export default function SinglePost() {
-   const location = useLocation();
-   const path = location.pathname.split("/")[2];
+   const { postId } = useParams();
    const [post, setPost] = useState({});
-   const PF = "http://localhost:4000/uploads";
-   const { user } = useContext(Context);
+
+   const { user } = useAuth();
    const [title, setTitle] = useState("");
    const [desc, setDesc] = useState("");
-   const [updateMode, setUpdateMode] = useState(false);
 
    useEffect(() => {
       const getPost = async () => {
-         const res = await axios.get("/posts/" + path);
-         console.log(res);
-         setPost(res.data);
-         setTitle(res.data.title);
-         setDesc(res.data.desc);
+         const res = await axios.get("/posts/" + postId);
+         console.log(res.data);
+         setPost(res.data.post);
+         setTitle(res.data.post.title);
+         setDesc(res.data.post.desc);
       };
       getPost();
-   }, [path]);
+   }, [postId]);
 
    const handleDelete = async () => {
       try {
-         await axios.delete(`/posts/${post._id}`, {
+         await axios.delete(`/posts/${postId}`, {
             data: { username: user.username },
          });
          window.location.replace("/");
@@ -37,22 +34,25 @@ export default function SinglePost() {
 
    const handleUpdate = async () => {
       try {
-         await axios.put(`/posts/${post._id}`, {
+         await axios.put(`/posts/${postId}`, {
             username: user.username,
             title,
             desc,
          });
-         setUpdateMode(false);
       } catch (err) {}
    };
 
    return (
       <div className="singlePost">
          <div className="singlePostWrapper">
-            {post.photo && (
-               <img src={PF + post.imagurl} alt="" className="singlePostImg" />
+            {post.imageurl && (
+               <img
+                  src={"http://localhost:4000" + post.imageurl}
+                  alt=""
+                  className="singlePostImg"
+               />
             )}
-            {updateMode ? (
+            {post.author === user?.username ? (
                <input
                   type="text"
                   value={title}
@@ -63,11 +63,11 @@ export default function SinglePost() {
             ) : (
                <h1 className="singlePostTitle">
                   {title}
-                  {post.username === user?.username && (
+                  {post.author === user?.username && (
                      <div className="singlePostEdit">
                         <i
                            className="singlePostIcon far fa-edit"
-                           onClick={() => setUpdateMode(true)}
+                           // onClick={() => setUpdateMode(true)}
                         ></i>
                         <i
                            className="singlePostIcon far fa-trash-alt"
@@ -80,15 +80,13 @@ export default function SinglePost() {
             <div className="singlePostInfo">
                <span className="singlePostAuthor">
                   Author:
-                  <Link to={`/?user=${post.username}`} className="link">
-                     <b> {post.username}</b>
-                  </Link>
+                  <b> {post.author}</b>
                </span>
                <span className="singlePostDate">
-                  {new Date(post.createdAt).toDateString()}
+                  Created At :{new Date(post.createdAt).toDateString()}
                </span>
             </div>
-            {updateMode ? (
+            {post.author === user?.username ? (
                <textarea
                   className="singlePostDescInput"
                   value={desc}
@@ -97,7 +95,7 @@ export default function SinglePost() {
             ) : (
                <p className="singlePostDesc">{desc}</p>
             )}
-            {updateMode && (
+            {post.author === user.username && (
                <button className="singlePostButton" onClick={handleUpdate}>
                   Update
                </button>

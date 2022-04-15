@@ -22,14 +22,18 @@ async function register(req, res) {
 }
 
 async function login(req, res) {
-   const { username, password, email } = req.body;
+   const { password, email } = req.body;
    const userExist = await User.findOne({ email: email });
    if (userExist) {
       // check user password with hashed password stored in the database
       const validPassword = await bcrypt.compare(password, userExist.password);
       if (validPassword) {
-         const token = generateAccessToken(username, email, password);
-         res.send({ jwt: token, user: { username, email } });
+         const token = generateAccessToken(userExist.username, email, password);
+
+         res.send({
+            jwt: token,
+            user: { username: userExist.username, email, _id: userExist._id },
+         });
       } else {
          res.status(400).json({ error: "Invalid Password" });
       }

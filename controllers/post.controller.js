@@ -12,7 +12,6 @@ function getPosts(req, res) {
 
 function getPost(req, res) {
    const id = req.params.id;
-   const { title, snippet, body } = req.body;
 
    Post.findById(id)
       .then((result) => {
@@ -27,14 +26,15 @@ function getPost(req, res) {
 }
 
 function postPost(req, res) {
-   if (!req.body.title || !req.body.snippet || !req.body.body) {
+   const { author, title, snippet, body } = req.body;
+   if (!title || !snippet || !body || !author) {
       res.status(403).send(
          JSON.stringify({ success: false, error: "parameter is missed" })
       );
    } else {
-      const { title, snippet, body } = req.body;
       console.log(req.file);
       const newPost = new Post({
+         author,
          title,
          snippet,
          body,
@@ -52,9 +52,9 @@ function postPost(req, res) {
 
 function updatedPost(req, res) {
    const id = req.params.id;
-   const { title, snippet, body } = req.body;
+   const { title, snippet, body, author } = req.body;
 
-   if (!title || !snippet || !body) {
+   if (!title || !snippet || !body || !author) {
       res.status(403).send(
          JSON.stringify({ success: false, error: "parameter is missed" })
       );

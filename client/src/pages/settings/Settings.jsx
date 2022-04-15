@@ -1,7 +1,7 @@
 import "./settings.css";
 import Sidebar from "../../components/sidebar/Sidebar";
-import { useContext, useState } from "react";
-import { Context } from "../../context/Context";
+import { useState } from "react";
+import { useAuth } from "../../context/Context";
 import axios from "axios";
 
 export default function Settings() {
@@ -11,12 +11,12 @@ export default function Settings() {
    const [password, setPassword] = useState("");
    const [success, setSuccess] = useState(false);
 
-   const { user, dispatch } = useContext(Context);
+   const { user } = useAuth();
    const PF = "http://localhost:4000/images/";
 
    const handleSubmit = async (e) => {
       e.preventDefault();
-      dispatch({ type: "UPDATE_START" });
+
       const updatedUser = {
          userId: user._id,
          username,
@@ -36,10 +36,7 @@ export default function Settings() {
       try {
          const res = await axios.put("/users/" + user._id, updatedUser);
          setSuccess(true);
-         dispatch({ type: "UPDATE_SUCCESS", payload: res.data });
-      } catch (err) {
-         dispatch({ type: "UPDATE_FAILURE" });
-      }
+      } catch (err) {}
    };
    return (
       <div className="settings">

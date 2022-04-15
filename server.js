@@ -7,6 +7,7 @@ const cors = require("cors");
 const postRouter = require("./routes/post.route");
 const UserRouter = require("./routes/user.route");
 const authRouter = require("./routes/auth.route");
+const uploadRouter = require("./routes/upload.route");
 
 app.use(morgan("dev"));
 app.use(express.json());
@@ -16,6 +17,7 @@ app.use(express.static("public"));
 app.use("/api/posts", postRouter);
 app.use("/api/users", UserRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/uploads", uploadRouter);
 
 const PORT = process.env.PORT || 3000;
 
