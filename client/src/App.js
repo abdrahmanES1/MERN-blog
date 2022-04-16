@@ -9,7 +9,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useAuth } from "./context/Context";
 
 function App() {
-   const { user } = useAuth();
+   const { currentUser } = useAuth();
    return (
       <Router>
          <TopBar />
@@ -17,10 +17,16 @@ function App() {
             <Route exact path="/">
                <Home />
             </Route>
-            <Route path="/register">{user ? <Home /> : <Register />}</Route>
-            <Route path="/login">{user ? <Home /> : <Login />}</Route>
-            <Route path="/write">{user ? <Write /> : <Register />}</Route>
-            <Route path="/settings">{user ? <Settings /> : <Register />}</Route>
+            <Route path="/register">
+               {currentUser ? <Home /> : <Register />}
+            </Route>
+            <Route path="/login">{currentUser ? <Home /> : <Login />}</Route>
+            <Route path="/write">
+               {currentUser ? <Write /> : <Register />}
+            </Route>
+            <Route path="/settings">
+               {currentUser ? <Settings /> : <Register />}
+            </Route>
             <Route path="/post/:postId">
                <Single />
             </Route>

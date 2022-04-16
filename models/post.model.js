@@ -5,22 +5,10 @@ const Schema = mongoose.Schema;
 const postSchema = new Schema(
    {
       author: { type: String, required: true },
-      title: {
-         type: String,
-         required: true,
-      },
-      snippet: {
-         type: String,
-         required: true,
-      },
-      body: {
-         type: String,
-         required: true,
-      },
-      imageurl: {
-         type: String,
-         required: false,
-      },
+      title: { type: String, required: true },
+      snippet: { type: String, required: true },
+      body: { type: String, required: true },
+      imageUrl: { type: String, required: true },
    },
    { timestamps: true }
 );

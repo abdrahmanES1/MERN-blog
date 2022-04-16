@@ -1,44 +1,60 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import "./write.css";
 import axios from "axios";
 import { useAuth } from "../../context/Context";
-
+import { useHistory } from "react-router-dom";
 export default function Write() {
    const [title, setTitle] = useState("");
    const [desc, setDesc] = useState("");
    const [file, setFile] = useState(null);
-   const { user, authHeader } = useAuth();
+   const [isLoading, setIsLoading] = useState(false);
 
-   const onFileChange = (event) => {
-      // Update the state
+   const { currentUser, authHeader } = useAuth();
 
-      console.log(event.target.files[0]);
-      setFile(event.target.files[0]);
-   };
-   const handleSubmit = (e) => {
+   const history = useHistory();
+   const handleSubmit = async (e) => {
       e.preventDefault();
-      const newPost = {
-         author: user.username,
-         title,
-         body: desc,
-         snippet: desc.slice(0, 20),
-         // imagurl,
-      };
-      const data = new FormData();
-      const filename = Date.now() + file.name;
-      data.append("name", filename);
-      data.append("image", file);
-      newPost.photo = filename;
-      console.log(file);
+      setIsLoading(true);
+      try {
+         const data = new FormData();
+         data.append("image", file);
 
-      const config = {
-         header: {
-            "Content-Type": "multipart/form-data",
-         },
-      };
-      axios
-         .post("http://localhost:4000/api/uploads", data, config)
-         .then((res) => console.log(res));
+         const config = {
+            header: {
+               "Content-Type": "multipart/form-data",
+            },
+         };
+
+         const image = await axios.post(
+            process.env.REACT_APP_BACKEND_URL + "api/uploads",
+            data,
+            config
+         );
+         const imageUrl = await image.data.imageUrl;
+         console.log();
+         const newPost = {
+            author: currentUser.username,
+            title,
+            body: desc,
+            snippet: desc.slice(0, 20),
+            imageUrl,
+         };
+
+         const post = await axios.post(
+            process.env.REACT_APP_BACKEND_URL + "api/posts",
+            newPost
+         );
+         const postInfo = await post.data;
+         console.log(postInfo);
+         if (postInfo) {
+            setTimeout(() => {
+               history.push(`post/${postInfo.post._id}`);
+            }, 1000);
+         }
+      } catch (err) {
+         console.log(err);
+      }
+      setIsLoading(false);
    };
 
    return (
@@ -76,7 +92,7 @@ export default function Write() {
                   onChange={(e) => setDesc(e.target.value)}
                ></textarea>
             </div>
-            <button className="writeSubmit" type="submit">
+            <button className="writeSubmit" type="submit" disabled={isLoading}>
                Publish
             </button>
          </form>

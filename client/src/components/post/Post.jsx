@@ -4,19 +4,15 @@ import { Link } from "react-router-dom";
 export default function Post({ post }) {
    return (
       <div className="post">
-         {post.imageurl && (
+         {post.imageUrl && (
             <img
                className="postImg"
-               src={"http://localhost:4000" + post.imageurl}
+               src={process.env.REACT_APP_BACKEND_URL + post.imageUrl}
                alt=""
             />
          )}
          <div className="postInfo">
-            <div className="postCats">
-               {/* {post.map((c) => (
-            <span className="postCat">{c.name}</span>
-          ))} */}
-            </div>
+            <div className="postCats"></div>
             <Link to={`/post/${post._id}`} className="link">
                <span className="postTitle">{post.title}</span>
             </Link>

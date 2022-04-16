@@ -26,19 +26,19 @@ function getPost(req, res) {
 }
 
 function postPost(req, res) {
-   const { author, title, snippet, body } = req.body;
-   if (!title || !snippet || !body || !author) {
+   const { author, title, snippet, body, imageUrl } = req.body;
+   console.log(req.body);
+   if (!title || !snippet || !body || !author || !imageUrl) {
       res.status(403).send(
          JSON.stringify({ success: false, error: "parameter is missed" })
       );
    } else {
-      console.log(req.file);
       const newPost = new Post({
          author,
          title,
          snippet,
          body,
-         imageurl: req.file.path.replace("public", ""),
+         imageUrl,
       });
 
       newPost
@@ -52,15 +52,15 @@ function postPost(req, res) {
 
 function updatedPost(req, res) {
    const id = req.params.id;
-   const { title, snippet, body, author } = req.body;
+   const { title, body } = req.body;
 
-   if (!title || !snippet || !body || !author) {
+   if (!title || !body) {
       res.status(403).send(
          JSON.stringify({ success: false, error: "parameter is missed" })
       );
    }
 
-   Post.findByIdAndUpdate(id, { title, snippet, body })
+   Post.findByIdAndUpdate(id, { title, body })
       .then((result) => {
          res.send({ success: true, post: result });
       })

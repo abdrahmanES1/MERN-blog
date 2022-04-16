@@ -8,13 +8,13 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-   const [user, setUser] = useState(null);
+   const [currentUser, setCurrentUser] = useState(null);
    const [token, setToken] = useState(null);
 
    useEffect(() => {
       if (localStorage.getItem("user")) {
          const flag = JSON.parse(localStorage.getItem("user"));
-         setUser(flag);
+         setCurrentUser(flag);
       }
    }, []);
 
@@ -27,17 +27,15 @@ export const AuthProvider = ({ children }) => {
          .then((res) => {
             const result = res.data;
             if (result.jwt) {
-               setUser(result.user);
+               setCurrentUser(result.user);
                setToken(result.jwt);
-               localStorage.setItem("user", JSON.stringify(result));
-               console.log(result.user);
-               console.log(result.jwt);
+               localStorage.setItem("user", JSON.stringify(result.user));
             }
          })
          .catch((err) => {
             console.log(err);
          });
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(currentUser));
    };
    const register = async (username, email, password) => {
       axios
@@ -48,12 +46,10 @@ export const AuthProvider = ({ children }) => {
          })
          .then((res) => {
             const result = res.data;
-            setUser(result.user);
+            setCurrentUser(result.user);
             setToken(result.jwt);
 
-            localStorage.setItem("user", JSON.stringify(result));
-            console.log(result.user);
-            console.log(result.jwt);
+            localStorage.setItem("user", JSON.stringify(result.user));
          })
          .catch((err) => {
             console.log(err);
@@ -61,10 +57,10 @@ export const AuthProvider = ({ children }) => {
    };
    const logout = async () => {
       localStorage.removeItem("user");
-      setUser(null);
+      setCurrentUser(null);
    };
    const authHeader = () => {
-      if (user && user.jwt) {
+      if (currentUser && currentUser.jwt) {
          // for Node.js Express back-end
          return { Authorization: "Bearer " + token };
       } else {
@@ -75,7 +71,7 @@ export const AuthProvider = ({ children }) => {
    const values = {
       login,
       register,
-      user,
+      currentUser,
       logout,
       authHeader,
    };

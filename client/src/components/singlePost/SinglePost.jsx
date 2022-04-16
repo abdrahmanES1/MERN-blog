@@ -8,51 +8,56 @@ export default function SinglePost() {
    const { postId } = useParams();
    const [post, setPost] = useState({});
 
-   const { user } = useAuth();
+   const { currentUser } = useAuth();
    const [title, setTitle] = useState("");
    const [desc, setDesc] = useState("");
 
    useEffect(() => {
       const getPost = async () => {
-         const res = await axios.get("/posts/" + postId);
-         console.log(res.data);
+         const res = await axios.get(
+            process.env.REACT_APP_BACKEND_URL + "api/posts/" + postId
+         );
          setPost(res.data.post);
          setTitle(res.data.post.title);
-         setDesc(res.data.post.desc);
+         setDesc(res.data.post.body);
       };
       getPost();
    }, [postId]);
 
    const handleDelete = async () => {
       try {
-         await axios.delete(`/posts/${postId}`, {
-            data: { username: user.username },
-         });
+         await axios.delete(
+            `${process.env.REACT_APP_BACKEND_URL}api/posts/${postId}`
+         );
          window.location.replace("/");
       } catch (err) {}
    };
 
    const handleUpdate = async () => {
       try {
-         await axios.put(`/posts/${postId}`, {
-            username: user.username,
-            title,
-            desc,
-         });
-      } catch (err) {}
+         await axios.put(
+            `${process.env.REACT_APP_BACKEND_URL}api/posts/${postId}`,
+            {
+               title,
+               body: desc,
+            }
+         );
+      } catch (err) {
+         console.log(err);
+      }
    };
 
    return (
       <div className="singlePost">
          <div className="singlePostWrapper">
-            {post.imageurl && (
+            {post.imageUrl && (
                <img
-                  src={"http://localhost:4000" + post.imageurl}
+                  src={process.env.REACT_APP_BACKEND_URL + post.imageUrl}
                   alt=""
                   className="singlePostImg"
                />
             )}
-            {post.author === user?.username ? (
+            {post.author === currentUser?.username ? (
                <input
                   type="text"
                   value={title}
@@ -63,7 +68,7 @@ export default function SinglePost() {
             ) : (
                <h1 className="singlePostTitle">
                   {title}
-                  {post.author === user?.username && (
+                  {post.author === currentUser?.username && (
                      <div className="singlePostEdit">
                         <i
                            className="singlePostIcon far fa-edit"
@@ -86,7 +91,7 @@ export default function SinglePost() {
                   Created At :{new Date(post.createdAt).toDateString()}
                </span>
             </div>
-            {post.author === user?.username ? (
+            {post.author === currentUser?.username ? (
                <textarea
                   className="singlePostDescInput"
                   value={desc}
@@ -95,9 +100,18 @@ export default function SinglePost() {
             ) : (
                <p className="singlePostDesc">{desc}</p>
             )}
-            {post.author === user.username && (
+            {post.author === currentUser?.username && (
                <button className="singlePostButton" onClick={handleUpdate}>
                   Update
+               </button>
+            )}
+            {post.author === currentUser?.username && (
+               <button
+                  className="singlePostButton"
+                  style={{ backgoundColor: "red" }}
+                  onClick={handleDelete}
+               >
+                  Delete
                </button>
             )}
          </div>

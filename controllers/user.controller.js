@@ -32,7 +32,7 @@ function getUser(req, res) {
       });
 }
 
-function updateUser(req, res) {
+async function updateUser(req, res) {
    User.findById(req.params.id).then((user) => {
       if (!user) {
          res.status(401).send({
@@ -41,6 +41,7 @@ function updateUser(req, res) {
          });
       } else {
          const data = { ...req.body };
+
          User.findByIdAndUpdate(req.params.id, data, {
             new: true,
             runValidators: true,

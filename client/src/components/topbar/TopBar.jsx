@@ -3,10 +3,8 @@ import { useAuth } from "../../context/Context";
 import "./topbar.css";
 
 export default function TopBar() {
-   const { user, logout } = useAuth();
-   const PF = "http://localhost:4000/uploads/";
+   const { currentUser, logout } = useAuth();
 
-   const handleLogout = () => {};
    return (
       <div className="top">
          <div className="topLeft">
@@ -37,13 +35,15 @@ export default function TopBar() {
                      WRITE
                   </Link>
                </li>
-               <li className="topListItem" onClick={logout}>
-                  {user && "LOGOUT"}
-               </li>
+               {currentUser && (
+                  <li className="topListItem" onClick={logout}>
+                     LOGOUT
+                  </li>
+               )}
             </ul>
          </div>
          <div className="topRight">
-            {user ? (
+            {currentUser ? (
                <Link to="/settings">
                   <img
                      className="topImg"
