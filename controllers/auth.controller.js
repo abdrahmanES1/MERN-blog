@@ -1,6 +1,7 @@
 const { generateAccessToken } = require("../config/auth.generator");
 const bcrypt = require("bcrypt");
 const User = require("../models/user.model");
+
 async function register(req, res) {
    const { username, email, password } = req.body;
    if (!username || !email || !password) {
@@ -16,9 +17,14 @@ async function register(req, res) {
    let newUser = new User({ username, email, password });
    const salt = await bcrypt.genSalt(10);
    newUser.password = await bcrypt.hash(newUser.password, salt);
-   newUser.save();
-   const token = generateAccessToken(username, email, password);
-   res.send({ jwt: token, user: { username, email } });
+  
+   newUser.save().then(user => {
+      let id = user._id.toString();
+      const token = generateAccessToken(username, email, password);
+      res.send({ jwt: token, user: { username, email, _id: id} });
+   }).catch(err => {
+      res.status(401).json({ error: err.toString() });
+   })
 }
 
 async function login(req, res) {
@@ -32,7 +38,7 @@ async function login(req, res) {
 
          res.send({
             jwt: token,
-            user: { username: userExist.username, email, _id: userExist._id },
+            user: { username: userExist.username, email, _id: userExist._id.toString() },
          });
       } else {
          res.status(400).json({ error: "Invalid Password" });

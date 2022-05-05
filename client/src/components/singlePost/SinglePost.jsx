@@ -57,7 +57,7 @@ export default function SinglePost() {
                   className="singlePostImg"
                />
             )}
-            {post.author === currentUser?.username ? (
+            {post.authorId === currentUser?._id ? (
                <input
                   type="text"
                   value={title}
@@ -68,7 +68,7 @@ export default function SinglePost() {
             ) : (
                <h1 className="singlePostTitle">
                   {title}
-                  {post.author === currentUser?.username && (
+                  {post.authorId === currentUser?._id && (
                      <div className="singlePostEdit">
                         <i
                            className="singlePostIcon far fa-edit"
@@ -91,7 +91,7 @@ export default function SinglePost() {
                   Created At :{new Date(post.createdAt).toDateString()}
                </span>
             </div>
-            {post.author === currentUser?.username ? (
+            {post.authorId === currentUser?._id ? (
                <textarea
                   className="singlePostDescInput"
                   value={desc}
@@ -100,12 +100,12 @@ export default function SinglePost() {
             ) : (
                <p className="singlePostDesc">{desc}</p>
             )}
-            {post.author === currentUser?.username && (
+            {post.authorId === currentUser?._id && (
                <button className="singlePostButton" onClick={handleUpdate}>
                   Update
                </button>
             )}
-            {post.author === currentUser?.username && (
+            {post.authorId === currentUser?._id && (
                <button
                   className="singlePostButton"
                   style={{ backgoundColor: "red" }}

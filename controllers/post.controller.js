@@ -1,5 +1,6 @@
 const Post = require("../models/post.model");
 const fs = require('fs');
+
 function getPosts(req, res) {
    Post.find()
       .then((posts) => {
@@ -26,15 +27,15 @@ function getPost(req, res) {
 }
 
 function postPost(req, res) {
-   const { author, title, snippet, body, imageUrl } = req.body;
-   console.log(req.body);
-   if (!title || !snippet || !body || !author || !imageUrl) {
+   const { author, title, snippet, body, imageUrl ,authorId } = req.body;
+   if (!title || !snippet || !body || !author || !imageUrl || !authorId) {
       res.status(403).send(
          JSON.stringify({ success: false, error: "parameter is missed" })
       );
    } else {
       const newPost = new Post({
          author,
+         authorId,
          title,
          snippet,
          body,

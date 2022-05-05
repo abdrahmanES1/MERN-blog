@@ -22,13 +22,14 @@ export const AuthProvider = ({ children }) => {
 
    const login = async (email, password) => {
       axios
-         .post(process.env.REACT_APP_BACKEND_URL +"api/auth/login", {
+         .post(process.env.REACT_APP_BACKEND_URL + "api/auth/login", {
             email,
             password,
          })
          .then((res) => {
             const result = res.data;
             if (result.jwt) {
+               
                setCurrentUser(result.user);
                setToken(result.jwt);
                localStorage.setItem("user", JSON.stringify(result.user));
@@ -49,6 +50,7 @@ export const AuthProvider = ({ children }) => {
          })
          .then((res) => {
             const result = res.data;
+            console.log(result);
             setCurrentUser(result.user);
             setToken(result.jwt);
 

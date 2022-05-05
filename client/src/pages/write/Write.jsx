@@ -33,7 +33,8 @@ export default function Write() {
          const imageUrl = await image.data.imageUrl;
          console.log();
          const newPost = {
-            author: currentUser.username,
+            author:currentUser.username,
+            authorId: currentUser._id,
             title,
             body: desc,
             snippet: desc.slice(0, 20),
