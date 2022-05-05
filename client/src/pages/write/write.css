@@ -10,15 +10,22 @@
   object-fit: cover;
 }
 
+form {
+  padding: 20px;
+  margin: auto;
+}
+
+
+@media (min-width:756px) {
+  .writeFormGroup {
+    margin-left: 150px;
+  }
+}
 .writeForm {
   position: relative;
 }
 
-.writeFormGroup {
-  margin-left: 150px;
-  display: flex;
-  align-items: center;
-}
+
 
 .writeIcon {
   width: 25px;

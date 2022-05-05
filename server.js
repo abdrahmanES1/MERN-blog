@@ -12,7 +12,9 @@ const uploadRouter = require("./routes/upload.route");
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors());
+
 connectDB();
+
 app.use(express.static("public"));
 app.use("/api/posts", postRouter);
 app.use("/api/users", UserRouter);

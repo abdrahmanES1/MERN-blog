@@ -1,5 +1,5 @@
 const Post = require("../models/post.model");
-
+const fs = require('fs');
 function getPosts(req, res) {
    Post.find()
       .then((posts) => {
@@ -72,12 +72,20 @@ function deletePost(req, res) {
 
    Post.findByIdAndDelete(id)
       .then((result) => {
-         if (result) res.send({ success: true, post: result });
-         else
+         if (result) {
+            const imageUrl = result.imageUrl;
+
+            fs.rm('public/' + imageUrl, (err) =>{
+               if(err) return console.log(err)
+               console.log("file deleted")
+            })
+            res.send({ success: true, post: result })
+         }
+         else{
             res.status(406).send({
                success: false,
                error: `Post not found with id of ${req.params.id}`,
-            });
+            });}
       })
       .catch((err) => {
          res.status(403).send({ success: false, error: err });
@@ -91,3 +99,9 @@ module.exports = {
    deletePost,
    updatedPost,
 };
+
+
+// fs.rm("public/uploads/1650063327441-444121265.png", (err) => {
+//    if (err) return console.log(err)
+//    console.log("file deleted")
+// })

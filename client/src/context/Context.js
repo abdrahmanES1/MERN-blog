@@ -14,7 +14,9 @@ export const AuthProvider = ({ children }) => {
    useEffect(() => {
       if (localStorage.getItem("user")) {
          const flag = JSON.parse(localStorage.getItem("user"));
+         const flagToken = JSON.parse(localStorage.getItem("jwt"));
          setCurrentUser(flag);
+         setToken(flagToken)
       }
    }, []);
 
@@ -30,12 +32,12 @@ export const AuthProvider = ({ children }) => {
                setCurrentUser(result.user);
                setToken(result.jwt);
                localStorage.setItem("user", JSON.stringify(result.user));
+               localStorage.setItem("jwt", JSON.stringify(result.jwt));
             }
          })
          .catch((err) => {
             console.log(err);
          });
-      localStorage.setItem("user", JSON.stringify(currentUser));
    };
    const register = async (username, email, password) => {
       axios
@@ -50,6 +52,7 @@ export const AuthProvider = ({ children }) => {
             setToken(result.jwt);
 
             localStorage.setItem("user", JSON.stringify(result.user));
+            localStorage.setItem("jwt", JSON.stringify(result.jwt));
          })
          .catch((err) => {
             console.log(err);
@@ -57,6 +60,7 @@ export const AuthProvider = ({ children }) => {
    };
    const logout = async () => {
       localStorage.removeItem("user");
+      localStorage.removeItem("jwt");
       setCurrentUser(null);
    };
    const authHeader = () => {

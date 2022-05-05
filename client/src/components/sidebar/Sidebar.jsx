@@ -15,11 +15,7 @@ export default function Sidebar() {
             </p>
          </div>
          <div className="sidebarItem">
-            <span className="sidebarTitle">CATEGORIES</span>
-            <ul className="sidebarList"></ul>
-         </div>
-         <div className="sidebarItem">
-            <span className="sidebarTitle">FOLLOW US</span>
+            <a href="https://facebook.com" className="sidebarTitle">FOLLOW US</a>
             <div className="sidebarSocial">
                <i className="sidebarIcon fab fa-facebook-square"></i>
                <i className="sidebarIcon fab fa-twitter-square"></i>

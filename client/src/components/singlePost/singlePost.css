@@ -4,7 +4,7 @@
 
 .singlePostWrapper {
   padding: 20px;
-  padding-right: 0;
+
   display: flex;
   flex-direction: column;
 }

@@ -72,16 +72,14 @@ export default function Write() {
                   type="file"
                   id="fileInput"
                   style={{ display: "none" }}
-                  onChange={(e) => setFile(e.target.files[0])}
-               />
+                  onChange={(e) => setFile(e.target.files[0])}/>
                <input
                   required
                   type="text"
                   placeholder="Title"
                   className="writeInput"
                   autoFocus={true}
-                  onChange={(e) => setTitle(e.target.value)}
-               />
+                  onChange={(e) => setTitle(e.target.value)}/>
             </div>
             <div className="writeFormGroup">
                <textarea
@@ -89,8 +87,7 @@ export default function Write() {
                   placeholder="Tell your story..."
                   type="text"
                   className="writeInput writeText"
-                  onChange={(e) => setDesc(e.target.value)}
-               ></textarea>
+                  onChange={(e) => setDesc(e.target.value)}></textarea>
             </div>
             <button className="writeSubmit" type="submit" disabled={isLoading}>
                Publish

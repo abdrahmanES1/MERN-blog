@@ -33,11 +33,10 @@ export default function Settings() {
                   />
                </div>
                <label>Username</label>
-               <input type="text" placeholder={currentUser.username} />
+               <p>{currentUser.username}</p>
                <label>Email</label>
-               <input required type="email" placeholder={currentUser.email} />
-               <label>Password</label>
-               <input required type="password" />
+               <p>{currentUser.email}</p>
+               
             </form>
          </div>
          <Sidebar />

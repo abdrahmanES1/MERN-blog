@@ -4,10 +4,11 @@ import { useAuth } from "../../context/Context";
 import "./login.css";
 
 export default function Login() {
-   const [isLoading, setIsLoading] = useState();
+   const [isLoading, setIsLoading] = useState(false);
+   const [error, setError]= useState("");
    const userRef = useRef();
    const passwordRef = useRef();
-   const { login } = useAuth();
+   const { login, currentUser } = useAuth();
    const history = useHistory();
 
    useEffect(() => {
@@ -16,16 +17,21 @@ export default function Login() {
 
    const handleSubmit = async (e) => {
       e.preventDefault();
+      setError('');
       setIsLoading(true);
       try {
          login(userRef.current.value, passwordRef.current.value);
-         history.push("/");
-      } catch (err) {}
+         if (currentUser) history.push("/");
+      } catch (err) {
+         setError('Email or Password Invalid');
+      }
    };
 
    return (
       <div className="login">
          <span className="loginTitle">Login</span>
+         {error && <span style={{color:"red"}}>{ error}</span>}
+         
          <form className="loginForm" onSubmit={handleSubmit}>
             <label>Email</label>
             <input
