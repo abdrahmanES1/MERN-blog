@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
 
    const login = async (email, password) => {
       axios
-         .post("http://localhost:4000/api/auth/login", {
+         .post(process.env.REACT_APP_BACKEND_URL +"api/auth/login", {
             email,
             password,
          })
@@ -39,9 +39,10 @@ export const AuthProvider = ({ children }) => {
             console.log(err);
          });
    };
+   
    const register = async (username, email, password) => {
       axios
-         .post("http://localhost:4000/api/auth/register", {
+         .post(process.env.REACT_APP_BACKEND_URL +"api/auth/register", {
             username,
             email,
             password,
