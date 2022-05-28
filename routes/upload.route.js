@@ -3,6 +3,8 @@ const path = require("path");
 const router = express.Router();
 const multer = require("multer");
 const uploadController = require("../controllers/upload.controller");
+const auth = require("../middleware/auth.middleware");
+
 const storage = multer.diskStorage({
    destination: function (req, file, cb) {
       cb(null, path.join("public/uploads"));
@@ -15,6 +17,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.post("", upload.single("image"), uploadController.postFile);
+router.post("", upload.single("image"),  uploadController.postFile);
 
 module.exports = router;

@@ -5,40 +5,37 @@ import "./login.css";
 
 export default function Login() {
    const [isLoading, setIsLoading] = useState(false);
-   const [error, setError]= useState("");
    const userRef = useRef();
    const passwordRef = useRef();
-   const { login, currentUser } = useAuth();
+   const { login, currentUser, AuthError } = useAuth();
    const history = useHistory();
 
-   useEffect(() => {
-      setIsLoading(false);
-   }, [isLoading]);
+   // useEffect(() => {
+   //    setIsLoading(false);
+   // }, [isLoading]);
 
    const handleSubmit = async (e) => {
       e.preventDefault();
-      setError('');
       setIsLoading(true);
-      try {
-         login(userRef.current.value, passwordRef.current.value);
-         if (currentUser) history.push("/");
-      } catch (err) {
-         setError('Email or Password Invalid');
-      }
+      
+      login(userRef.current.value, passwordRef.current.value);
+      if (currentUser) history.push("/");
+   
+      setIsLoading(false);
    };
 
    return (
       <div className="login">
          <span className="loginTitle">Login</span>
-         {error && <span style={{color:"red"}}>{ error}</span>}
-         
          <form className="loginForm" onSubmit={handleSubmit}>
+            {/* {AuthError && (<span>{AuthError}</span>)} */}
             <label>Email</label>
             <input
                type="email"
                className="loginInput"
                placeholder="Enter your username..."
                ref={userRef}
+               required
             />
             <label>Password</label>
             <input
@@ -46,6 +43,7 @@ export default function Login() {
                className="loginInput"
                placeholder="Enter your Email ..."
                ref={passwordRef}
+               required
             />
             <button className="loginButton" type="submit" disabled={isLoading}>
                Login

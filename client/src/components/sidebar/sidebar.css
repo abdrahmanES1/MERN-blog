@@ -48,7 +48,9 @@
   margin-top: 15px;
   cursor: pointer;
 }
-
+.sidebarImage{
+  height: 200px;
+}
 .sidebarSocial {
   margin-top: 15px;
   width: 250px;

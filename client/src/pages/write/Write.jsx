@@ -9,7 +9,7 @@ export default function Write() {
    const [file, setFile] = useState(null);
    const [isLoading, setIsLoading] = useState(false);
 
-   const { currentUser, authHeader } = useAuth();
+   const { currentUser, token } = useAuth();
 
    const history = useHistory();
    const handleSubmit = async (e) => {
@@ -18,35 +18,42 @@ export default function Write() {
       try {
          const data = new FormData();
          data.append("image", file);
-
+         
          const config = {
-            header: {
+            headers: {
                "Content-Type": "multipart/form-data",
             },
          };
-
+      
          const image = await axios.post(
             process.env.REACT_APP_BACKEND_URL + "api/uploads",
             data,
             config
-         );
+         )
+
          const imageUrl = await image.data.imageUrl;
-         console.log();
+
+         
          const newPost = {
-            author:currentUser.username,
+            author: currentUser.username,
             authorId: currentUser._id,
             title,
             body: desc,
             snippet: desc.slice(0, 20),
             imageUrl,
          };
+         console.log(newPost)
 
          const post = await axios.post(
             process.env.REACT_APP_BACKEND_URL + "api/posts",
-            newPost
+            newPost,{
+               headers: {
+                  Authorization: `Bearer ${token}`
+               }
+            }
          );
          const postInfo = await post.data;
-         console.log(postInfo);
+         //console.log(postInfo);
          if (postInfo) {
             setTimeout(() => {
                history.push(`post/${postInfo.post._id}`);

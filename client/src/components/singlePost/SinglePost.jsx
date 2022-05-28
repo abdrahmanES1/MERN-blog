@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { useAuth } from "../../context/Context";
 import "./singlePost.css";
 
@@ -8,14 +8,18 @@ export default function SinglePost() {
    const { postId } = useParams();
    const [post, setPost] = useState({});
 
-   const { currentUser } = useAuth();
+   const { currentUser ,token } = useAuth();
    const [title, setTitle] = useState("");
    const [desc, setDesc] = useState("");
 
    useEffect(() => {
       const getPost = async () => {
          const res = await axios.get(
-            process.env.REACT_APP_BACKEND_URL + "api/posts/" + postId
+            process.env.REACT_APP_BACKEND_URL + "api/posts/" + postId, {
+            headers: {
+               Authorization: `Bearer ${token}`
+            }
+         }
          );
          setPost(res.data.post);
          setTitle(res.data.post.title);
@@ -26,8 +30,12 @@ export default function SinglePost() {
 
    const handleDelete = async () => {
       try {
-         await axios.delete(
-            `${process.env.REACT_APP_BACKEND_URL}api/posts/${postId}`
+         await axios.delete(`${process.env.REACT_APP_BACKEND_URL}api/posts/${postId}`, 
+            {
+               headers: {
+                  Authorization: `Bearer ${token}`
+               }
+            }
          );
          window.location.replace("/");
       } catch (err) {}
@@ -40,7 +48,11 @@ export default function SinglePost() {
             {
                title,
                body: desc,
+            },{
+            headers: {
+               Authorization: `Bearer ${token}`
             }
+         }
          );
       } catch (err) {
          console.log(err);

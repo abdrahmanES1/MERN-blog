@@ -23,12 +23,15 @@ async function register(req, res) {
       const token = generateAccessToken(username, email, password);
       res.send({ jwt: token, user: { username, email, _id: id} });
    }).catch(err => {
-      res.status(401).json({ error: err.toString() });
+      res.status(401).send({ error: err.toString() });
    })
 }
 
 async function login(req, res) {
-   const { password, email } = req.body;
+    const { password, email } = req.body;
+   if (!email || !password) {
+      return res.send({ message: "parameter are missed" });
+   }
    const userExist = await User.findOne({ email: email });
    if (userExist) {
       // check user password with hashed password stored in the database
@@ -41,10 +44,10 @@ async function login(req, res) {
             user: { username: userExist.username, email, _id: userExist._id.toString() },
          });
       } else {
-         res.status(400).json({ error: "Invalid Password" });
+         res.status(400).send({ error: "Invalid Password" });
       }
    } else {
-      res.status(401).json({ error: "User does not exist" });
+      res.status(401).send({ error: "User does not exist" });
    }
 }
 

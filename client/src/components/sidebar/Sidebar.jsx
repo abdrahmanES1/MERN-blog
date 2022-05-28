@@ -4,23 +4,21 @@ export default function Sidebar() {
    return (
       <div className="sidebar">
          <div className="sidebarItem">
-            <span className="sidebarTitle">ABOUT ME</span>
+            <span className="sidebarTitle"> MORE ABOUT ME</span>
             <img
-               src="https://i.pinimg.com/236x/1e/3f/58/1e3f587572a7a7b20bbf1828595a1786--holiday-party-themes-holiday-gift-guide.jpg"
+               className="sidebarImage"
+               src="https://images.unsplash.com/photo-1572985025310-cc8cafbbf394?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1964"
                alt=""
             />
-            <p>
-               Lorem ipsum dolor sit amet consectetur adipisicing elit.
-               Voluptate qui necessitatibus nostrum illum reprehenderit.
-            </p>
+            
          </div>
          <div className="sidebarItem">
-            <a href="https://facebook.com" className="sidebarTitle">FOLLOW US</a>
-            <div className="sidebarSocial">
-               <i className="sidebarIcon fab fa-facebook-square"></i>
+            <a href="abderrahman-es.netlify.app" className="sidebarTitle">FOLLOW US (Personal Website) </a>
+                       <div className="sidebarSocial">
                <i className="sidebarIcon fab fa-twitter-square"></i>
-               <i className="sidebarIcon fab fa-pinterest-square"></i>
-               <i className="sidebarIcon fab fa-instagram-square"></i>
+               <a href="https://www.linkedin.com/in/abderrahman-essebyity/">
+                  <i className="sidebarIcon fab fa-linkedin"></i>
+               </a>
             </div>
          </div>
       </div>

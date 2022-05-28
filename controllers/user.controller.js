@@ -1,4 +1,5 @@
 const User = require("../models/user.model");
+const bcrypt = require("bcrypt");
 
 function getUsers(req, res) {
    User.find()
@@ -33,6 +34,10 @@ function getUser(req, res) {
 }
 
 async function updateUser(req, res) {
+   const { password } = req.body ;
+   const salt = await bcrypt.genSalt(10);
+   const newPassword = await bcrypt.hash(password, salt);
+
    User.findById(req.params.id).then((user) => {
       if (!user) {
          res.status(401).send({
@@ -41,8 +46,7 @@ async function updateUser(req, res) {
          });
       } else {
          const data = { ...req.body };
-
-         User.findByIdAndUpdate(req.params.id, data, {
+         User.findByIdAndUpdate(req.params.id, { ...data, password: newPassword}, {
             new: true,
             runValidators: true,
          })

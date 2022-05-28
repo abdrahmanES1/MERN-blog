@@ -1,7 +1,6 @@
 require("dotenv").config({ path: ".env.local" });
 const express = require("express");
 const app = express();
-
 const morgan = require("morgan");
 const connectDB = require("./config/database");
 const cors = require("cors");
@@ -13,7 +12,7 @@ const uploadRouter = require("./routes/upload.route");
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors());
-
+const PORT = process.env.PORT || 3000;
 
 connectDB();
 
@@ -26,18 +25,21 @@ app.use((err, req, res, next) => {
    console.error(err.stack)
    res.status(500).send('Something broke!')
 })
-const PORT = process.env.PORT || 3000;
-
 
 app.use((req, res, next)=>{
 
-    res.status(404).send({error:"route not found"})
+    res.status(404).send({error:"route not found !"})
 
 })
 
 app.listen(PORT, () => {
    console.log(`listening on port ${PORT} ...`);
 });
+
+
+
+
+
 
 // {
 //     "title": "title 1",

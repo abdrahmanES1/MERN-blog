@@ -8,17 +8,17 @@ router.get("", PostsContoller.getPosts);
 router.get("/:id", PostsContoller.getPost);
 router.post(
    "",
-   // auth.authenticateToken,
+   auth.authenticateToken,
    PostsContoller.postPost
 );
 router.delete(
    "/:id",
-   // auth.authenticateToken,
+    auth.authenticateToken,
    PostsContoller.deletePost
 );
 router.put(
    "/:id",
-   // auth.authenticateToken,
+    auth.authenticateToken,
    PostsContoller.updatedPost
 );
 module.exports = router;

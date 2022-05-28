@@ -8,25 +8,27 @@ export default function Register() {
    const [username, setUsername] = useState("");
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
-   const [error, setError] = useState(false);
+   const [error, setError] = useState(null);
    const history = useHistory();
-   const { currentUser, register } = useAuth();
+   const { currentUser, register, AuthError } = useAuth();
    const handleSubmit = async (e) => {
       e.preventDefault();
-      setError(false);
+      setError(null);
       try {
          register(username, email, password);
          if (currentUser) {
             history.push("/");
          }
       } catch (err) {
-         setError(true);
+         setError("true");
       }
    };
    return (
       <div className="register">
          <span className="registerTitle">Register</span>
+         
          <form className="registerForm" onSubmit={handleSubmit}>
+            {/* {AuthError && <span style={{ color: "red" }}>{AuthError}</span>} */}
             <label>Username</label>
             <input
                required
@@ -60,11 +62,11 @@ export default function Register() {
                Login
             </Link>
          </button>
-         {error && (
+         {/* {error && (
             <span style={{ color: "red", marginTop: "10px" }}>
                Something went wrong!
             </span>
-         )}
+         )} */}
       </div>
    );
 }
